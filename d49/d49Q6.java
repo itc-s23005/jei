@@ -1,72 +1,69 @@
 public class d49Q6 {
-				public static void main(String[] arguments) {
-								int[] nums = new int[arguments.length];
+    public static void main(String[] arguments) {
+        int[] nums = new int[arguments.length];
 
-								int i = 0;
-								for (String arg : arguments) {
-												nums[i++] = Integer.parseInt(arg);
-								}
+        int i = 0;
+        for (String arg : arguments) {
+            nums[i++] = Integer.parseInt(arg);
+        }
 
-								Analyzer analyzer = new Analyzer();
-								analyzer.setNums(nums);
-								System.out.println(analyzer.analyze());
-				}
+        Analyzer analyzer = new Analyzer();
+        analyzer.setNums(nums);
+        System.out.println(analyzer.analyze());
+    }
 }
 
 class Analyzer {
-				int[] nums;
+    int[] nums;
 
-				void setNums(int[] nums) {
-								this.nums = nums;
-				}
+    void setNums(int[] nums) {
+        this.nums = nums;
+    }
 
-				String analyze() {
-								StringBuilder sb = new StringBuilder();
+    String analyze() {
+        StringBuilder sb = new StringBuilder();
 
-								double avg = getAverage();
-								sb.append("平均値:" + avg + "\n");
+        double avg = getAverage();
+        sb.append("平均値: ").append(avg).append("\n");
 
-								int r = getRange();
-								sb.append("値の範囲:" + r + "\n");
+        int r = getRange();
+        sb.append("値の範囲: ").append(r).append("\n");
 
-								int[] counts = getHighLowCounts(avg);
-								sb.append("平均より大きい値の個数:" + counts[0]
-													+" 平均より小さい値の個数:" + counts[1] + "\n");
+        int[] counts = getHighLowCounts(avg);
+        sb.append("平均より大きい値の個数: ").append(counts[0])
+          .append(" 平均より小さい値の個数: ").append(counts[1]).append("\n");
 
-								return sb.toString();
-				}
+        return sb.toString();
+    }
 
-				double getAverage() {
-								double sum = 0;
-								for (int n : nums) {
-												sum += n;
-								}
-								return sum / nums.length;
-				}
+    private double getAverage() {
+        if (nums.length == 0) return 0;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        return (double) sum / nums.length;
+    }
 
-				int getRange() {
-								int min = 1000, max = -1000;
-								for (int n : nums) {
-												if (n < min) {
-																min = n;
-												}
-												if (n > max) {
-																max = n;
-												}
-								}
-								return max - min;
-				}
+    private int getRange() {
+        if (nums.length == 0) return 0;
+        int min = nums[0];
+        int max = nums[0];
+        for (int num : nums) {
+            if (num < min) min = num;
+            if (num > max) max = num;
+        }
+        return max - min;
+    }
 
-				int[] getHighLowCounts(double avg) {
-								int high = 0, low = 0;
-								for (int n : nums) {
-												if (n < avg) {
-																low++;
-												}
-												if (n > avg) {
-																high++;
-												}
-								}
-								return new int[]{high, low};
-				}
+    private int[] getHighLowCounts(double avg) {
+        int highCount = 0;
+        int lowCount = 0;
+        for (int num : nums) {
+            if (num > avg) highCount++;
+            else if (num < avg) lowCount++;
+        }
+        return new int[] { highCount, lowCount };
+    }
 }
+
